@@ -27,6 +27,12 @@
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeFace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\RubiksCubeTrainer.h">
@@ -38,5 +44,16 @@
     <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeFace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\blocksVertices.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -19,15 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Block.cpp" />
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Camera.cpp" />
+    <ClCompile Include="CubeFace.cpp" />
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\main.cpp" />
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\RubiksCubeTrainer.cpp" />
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Block.h" />
     <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Camera.h" />
+    <ClInclude Include="CubeFace.h" />
     <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\RubiksCubeTrainer.h" />
     <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\blocksVertices.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -105,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>$(SolutionDir)/../OpenGL-libraries/Simple OpenGL Image Library/lib;$(SolutionDir)/../OpenGL-libraries/glew/lib/Release/Win32;$(SolutionDir)/../OpenGL-libraries/glfw/lib-vc2015;$(SolutionDir)/../OpenGL-libraries/sfml/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;opengl32.lib;glew32.lib;SOIL.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;opengl32.lib;glew32.lib;SOIL.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
