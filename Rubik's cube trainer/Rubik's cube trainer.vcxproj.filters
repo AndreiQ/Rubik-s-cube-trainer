@@ -18,5 +18,25 @@
     <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\RubiksCubeTrainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\RubiksCubeTrainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Rubik%27s cube trainer\Rubik%27s cube trainer\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
