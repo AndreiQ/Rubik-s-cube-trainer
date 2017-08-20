@@ -47,6 +47,7 @@ void RubiksCubeTrainer::initWindow()
 	settings.minorVersion = 3;
 	sf::Window window(sf::VideoMode(screenWidth, screenHeight), "OpenGL", sf::Style::Default, settings);
 	window.setActive(true);
+
 	// Initialize GLEW to setup the OpenGL Function pointers
 	glewExperimental = GL_TRUE;
 	glewInit();
