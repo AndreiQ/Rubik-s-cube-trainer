@@ -51,20 +51,24 @@ void RubiksCubeTrainer::mouse_callback(sf::Vector2i mousePosition)
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-void RubiksCubeTrainer::setupVAOandVBO(vector<GLfloat> vertices)
+void RubiksCubeTrainer::setupVAOandVBO(vector < vector<GLfloat>>blocks)
 {
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
+	glGenVertexArrays(3, VAO);
+	glGenBuffers(3, VBO);
 	// Bind our Vertex Array Object first, then bind and set our buffers and pointers.
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
-	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), nullptr);
-	glEnableVertexAttribArray(0);
-	// TexCoord attribute
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	for(int i=0; i<3; i++)
+	{
+		glBindVertexArray(VAO[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO[i]);
+		glBufferData(GL_ARRAY_BUFFER, blocks[i].size() * sizeof(GLfloat), &blocks[i][0], GL_STATIC_DRAW);
+		// Position attribute
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), nullptr);
+		glEnableVertexAttribArray(0);
+		// color attribute
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(2);
+	}
+
 	glBindVertexArray(0); // Unbind VAO
 }
 
@@ -115,12 +119,15 @@ void RubiksCubeTrainer::draw(Shader ourShader,vector<glm::vec3> &cubePositions)
 	// Pass the matrices to the shader
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-	glBindVertexArray(VAO);
+	
 	//in draw function
-	for (GLuint i = 0; i < 27; i++)
+	for (GLuint i = 0; i < 3; i++)
 	{
+		glBindVertexArray(VAO[i]);
 		// Calculate the model matrix for each object and pass it to shader before drawing
-		glm::mat4 model = glm::translate(model, cubePositions[i]);
+		//aici se pare ca nu pot sa atribui direct
+		glm::mat4 model;
+		model = glm::translate(model, cubePositions[i]);
 		//ROTATE AROUND POINT
 		//	GLfloat angle = 3.0f * deltaTime;
 		//model = glm::rotate(model, angle, glm::vec3(1.0f, 0.0f, 0.0f));
@@ -130,6 +137,8 @@ void RubiksCubeTrainer::draw(Shader ourShader,vector<glm::vec3> &cubePositions)
 	}
 
 	this->window.display();
+
+	glBindVertexArray(0);
 }
 void RubiksCubeTrainer::initWindow()
 {
@@ -150,7 +159,7 @@ void RubiksCubeTrainer::start()
 	initWindow();
 	Shader ourShader("Shaders/vertex.vs", "Shaders/fragment.frag");
 	// Set up our vertex data (and buffer(s)) and attribute pointers
-	vector<GLfloat> vertices{
+	vector<GLfloat> block1{
 		//size = 6*36
 		//positions				//colors
 		//						R    G    B
@@ -186,12 +195,12 @@ void RubiksCubeTrainer::start()
 		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,
 		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,//blue
 		//UP
-		-0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,//yellow
+		-0.5f, -0.5f, -0.5f,  RED,
+		0.5f, -0.5f, -0.5f,  RED,
+		0.5f, -0.5f,  0.5f,  RED,
+		0.5f, -0.5f,  0.5f,  RED,
+		-0.5f, -0.5f,  0.5f, RED,
+		-0.5f, -0.5f, -0.5f, RED,//yellow
 		//DOWN
 		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
 		0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
@@ -200,12 +209,119 @@ void RubiksCubeTrainer::start()
 		-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,
 		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f//white
 	};
+
+	vector<GLfloat> block2{
+		//size = 6*36
+		//positions				//colors
+		//						R    G    B
+		//BACK
+		-0.5f, -0.5f, -0.5f,	RED,
+		0.5f, -0.5f, -0.5f,		RED,
+		0.5f,  0.5f, -0.5f,		RED,
+		0.5f,  0.5f, -0.5f,		RED,
+		-0.5f,  0.5f, -0.5f,	RED,
+		-0.5f, -0.5f, -0.5f,	RED,
+		//36
+		//FRONT
+		0.5f,  0.5f,  0.5f,  ORANGE,
+		0.5f,  0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f,  0.5f,  ORANGE,
+		0.5f,  0.5f,  0.5f,  ORANGE,
+		//LEFT
+
+		-0.5f, -0.5f,  0.5f,  GREEN,
+		0.5f, -0.5f,  0.5f,  GREEN,
+		0.5f,  0.5f,  0.5f,  GREEN,
+		0.5f,  0.5f,  0.5f,  GREEN,
+		-0.5f,  0.5f,  0.5f,  GREEN,
+		-0.5f, -0.5f,  0.5f,  GREEN,//green
+									//RIGHT
+
+									-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,//blue
+																		  //UP
+																		  -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
+																		  -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f,
+																		  -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,//yellow
+																												//DOWN
+																												-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
+																												0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f,
+																												0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,
+																												0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,
+																												-0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,
+																												-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f//white
+	};
+
+	vector<GLfloat> block3{
+		//size = 6*36
+		//positions				//colors
+		//						R    G    B
+		//BACK
+		-0.5f, -0.5f, -0.5f,	RED,
+		0.5f, -0.5f, -0.5f,		RED,
+		0.5f,  0.5f, -0.5f,		RED,
+		0.5f,  0.5f, -0.5f,		RED,
+		-0.5f,  0.5f, -0.5f,	RED,
+		-0.5f, -0.5f, -0.5f,	RED,
+		//36
+		//FRONT
+		0.5f,  0.5f,  0.5f,  ORANGE,
+		0.5f,  0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f, -0.5f,  ORANGE,
+		0.5f, -0.5f,  0.5f,  ORANGE,
+		0.5f,  0.5f,  0.5f,  ORANGE,
+		//LEFT
+
+		-0.5f, -0.5f,  0.5f,  GREEN,
+		0.5f, -0.5f,  0.5f,  GREEN,
+		0.5f,  0.5f,  0.5f,  GREEN,
+		0.5f,  0.5f,  0.5f,  GREEN,
+		-0.5f,  0.5f,  0.5f,  GREEN,
+		-0.5f, -0.5f,  0.5f,  GREEN,//green
+									//RIGHT
+
+									-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f,  0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,1.0f,
+									-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,1.0f,//blue
+																		  //UP
+																		  -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
+																		  0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,
+																		  -0.5f, -0.5f,  0.5f, 1.0f, 1.0f, 0.0f,
+																		  -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,//yellow
+																												//DOWN
+																												-0.5f,  0.5f, -0.5f,  GREEN,
+																												0.5f,  0.5f, -0.5f,  GREEN,
+																												0.5f,  0.5f,  0.5f,  GREEN,
+																												0.5f,  0.5f,  0.5f,  GREEN,
+																												-0.5f,  0.5f,  0.5f,  GREEN,
+																												-0.5f,  0.5f, -0.5f,  GREEN//white
+	};
+	vector < vector<GLfloat>>blocks;
+	blocks.push_back(block1);
+	blocks.push_back(block2);
+	blocks.push_back(block3);
+
 	vector<glm::vec3> cubePositions = {
 		//FRONT
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(1.0f, 0.0f, 0.0f),
 		glm::vec3(2.0f, 0.0f,0.0f),
-		glm::vec3(0.0f, 1.0f,0.0f),
+		glm::vec3(0.0f, 1.0f,0.0f)/*
 		glm::vec3(0.0f, 2.0f,0.0f),
 		glm::vec3(1.0f, 1.0f,0.0f), //CENTER
 		glm::vec3(1.0f, 2.0f,0.0f),
@@ -231,24 +347,24 @@ void RubiksCubeTrainer::start()
 		glm::vec3(1.0f, 2.0f,-2.0f),
 		glm::vec3(2.0f, 1.0f,-2.0f),
 		glm::vec3(2.0f, 2.0f,-2.0f),
-
+		*/
 	};
 	sf::Clock clock;
 
-	setupVAOandVBO(vertices);
+	setupVAOandVBO(blocks);
 	while (running)
 	{
 
 		sf::Time elapsed = clock.restart();
 		deltaTime = elapsed.asSeconds();
 		sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+
 		processEvents();
 		update(localPosition);
 		draw(ourShader,cubePositions);
-		glBindVertexArray(0);
 	}
 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(3, VAO);
+	glDeleteBuffers(3, VBO);
 
 }

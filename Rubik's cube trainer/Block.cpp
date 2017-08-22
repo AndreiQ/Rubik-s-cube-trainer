@@ -5,8 +5,3 @@
 Block::Block()
 {
 }
-
-
-Block::~Block()
-{
-}

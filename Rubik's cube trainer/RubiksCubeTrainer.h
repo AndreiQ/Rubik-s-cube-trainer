@@ -12,7 +12,7 @@ class RubiksCubeTrainer
 	GLfloat lastX = 400, lastY = 700;
 	bool firstMouse = true;
 	GLfloat deltaTime = 0.0f;
-	GLuint VBO, VAO;
+	unsigned int VBO[3], VAO[3];
 	Camera camera;
 	sf::Window window;
 	sf::ContextSettings settings;
@@ -26,7 +26,7 @@ class RubiksCubeTrainer
 	void initWindow();
 	void keyboard_callback();
 	void mouse_callback(sf::Vector2i mousePosition);
-	void setupVAOandVBO(vector<GLfloat> vertices);
+	void setupVAOandVBO(vector < vector<GLfloat>>blocks);
 
 public:
 	RubiksCubeTrainer(string name, GLuint screenWidth, GLuint screenHeight);
